@@ -51,12 +51,12 @@ class StopWatchState extends State<StopWatch> {
       body: Column(
         children: <Widget>[
           Expanded(child: _buildCounter(context)),
-          Expanded(child: _buildHeader(context)),
+          //Expanded(child: _buildHeader(context)),
           Expanded(child: _buildLapDisplay()),
         ],
       ),
     );
-  }
+   }
 
   Widget _buildCounter(BuildContext context) {
     return Container(
@@ -174,11 +174,9 @@ class StopWatchState extends State<StopWatch> {
   }
 
   Widget _cabecalho() {
-    return GridView.count(crossAxisCount: 3, children: [
-      Text('Volta'),
-      Text('Tempo das Voltas'),
-      Text('Tempo Geral'),
-    ]);
+
+    return _buildHeader(context);
+
   }
 
   Widget _listViewBuilder() {
@@ -187,10 +185,10 @@ class StopWatchState extends State<StopWatch> {
       itemExtent: itemHeight,
       itemCount: laps.length + 1,
       itemBuilder: (context, index) {
-       /* if (index == 0) {
+       if (index == 0) {
           return _cabecalho();
-        }*/
-        // index -= 1;
+        }
+         index -= 1;
       //  index = 1;
         final lapMilliseconds = laps[index];
         var totalMilliseconds = 0;
@@ -208,14 +206,16 @@ class StopWatchState extends State<StopWatch> {
 
   Widget _listItem(index, lapMilliseconds, totalMilliseconds) {
     return GridView.count(crossAxisCount: 3, children: [
-      _tile('Lap ${index + 1}'),
-      _tile(_secondsText(lapMilliseconds)),
-      _tile(_secondsText(totalMilliseconds)),
+      ListTile(title:Text('Lap ${index + 1}',textAlign: TextAlign.center),),
+      ListTile(title:Text(_secondsText(lapMilliseconds),textAlign: TextAlign.center),),
+      ListTile(title:Text(_secondsText(totalMilliseconds),textAlign: TextAlign.center),),
+
     ]);
   }
 
   Widget _tile(String text) {
     return Text(text);
+    //return Center(child:Text(text));
   }
 
   @override
@@ -256,7 +256,7 @@ class StopWatchState extends State<StopWatch> {
                     child: Container(
                       height: 50,
                       color:Colors.green,
-                      child: Center(child: Text('Volta'),
+                      child: Center(child: Text('Lap Number'),
                       ),
                     ),
                 ),
@@ -265,7 +265,7 @@ class StopWatchState extends State<StopWatch> {
                   child: Container(
                     height: 50,
                     color:Colors.green,
-                    child: Center(child: Text('Tempo das voltas'),
+                    child: Center(child: Text('Lap time'),
                     ),
                   ),
                 ),
@@ -274,11 +274,51 @@ class StopWatchState extends State<StopWatch> {
                   child: Container(
                     height: 50,
                     color:Colors.green,
-                    child: Center(child: Text('Tempo Geral'),
+                    child: Center(child: Text('Elapsed Time'),
                     ),
                   ),
                 ),
           ]),
     ]);
   }
+}
+Widget _buildHeader(BuildContext context) {
+  return Table(
+      defaultColumnWidth:
+      FixedColumnWidth(MediaQuery.of(context).size.width / 3),
+      border: TableBorder.all(
+          color: Colors.black26, width: 1, style: BorderStyle.none),
+      children: [
+        TableRow(
+            children: <Widget>[
+
+              TableCell(
+                verticalAlignment: TableCellVerticalAlignment.middle,
+                child: Container(
+                  height: 50,
+                  color:Colors.green,
+                  child: Center(child: Text('Volta'),
+                  ),
+                ),
+              ),
+              TableCell(
+                verticalAlignment: TableCellVerticalAlignment.middle,
+                child: Container(
+                  height: 50,
+                  color:Colors.green,
+                  child: Center(child: Text('Tempo das voltas'),
+                  ),
+                ),
+              ),
+              TableCell(
+                verticalAlignment: TableCellVerticalAlignment.middle,
+                child: Container(
+                  height: 50,
+                  color:Colors.green,
+                  child: Center(child: Text('Tempo Geral'),
+                  ),
+                ),
+              ),
+            ]),
+      ]);
 }
